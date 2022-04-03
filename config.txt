@@ -1,0 +1,4 @@
+resolution 800 450
+language en
+Defalut_category Science
+depth 3

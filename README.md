@@ -3,7 +3,7 @@ Just a small project i've made mostly for myself. As said in the description  it
 # How it works
 <img width="440" alt="ui" src="https://user-images.githubusercontent.com/90620708/161583765-0dd71fbd-c373-4e46-8007-7c8adaffc7f5.png">
 
-The blue link is clickable and will open the wikipedia page in your browser. The button "More" will generate another fact from one of selected categories. "Add field" will add category written nearby if it exists. "Show" will show or hide the category field and the "Remove Selected" button. The latter is for deleting selected categories. "Save" will save url in _saved_urls.txt_. To open it click "Links" button. Resolution of program window and language can be changed by editing config file.
+The blue link is clickable and will open the wikipedia page in your browser. The button "More" will generate another fact from one of selected categories. "Add field" will add category written nearby if it exists. "Show" will show or hide the category field and the "Delete Selected" button. The latter is for deleting selected categories. "Save" will save url in _saved_urls.txt_. To open it click "Links" button. Resolution of program window and language can be changed by editing config file.
 ## Config file
 Contain 4 changeable  parameters:
 - resolution - width and height of program window

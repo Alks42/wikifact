@@ -1,4 +1,3 @@
 resolution 800 450
-language en
-Defalut_category Science
+language ru
 depth 3

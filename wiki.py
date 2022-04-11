@@ -90,16 +90,15 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 if child != self.CatsLayout:
                     child.setParent(None)
 
-        # reading or editing file with categories
+        # reading or creating file with categories
 
-        if os.path.isfile(filename):
-            with open(filename) as f:
-                self.cats = f.readline().split(";")
+        with open(filename, "a+") as f:
+            f.seek(0)
+            self.cats = f.readline().split(";")
 
-        if not os.path.isfile(filename) or self.cats == [""]:
-            with open(filename, "w") as f:
-                f.write(def_cat)
-            self.cats = [def_cat]
+        if self.cats == [""]:
+            self.CatsLayout.addWidget(self.Delete, 0, 0, 1, 4)
+            return
 
         # and setting checkboxes for categories
 
@@ -160,14 +159,17 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.open_saved_urls.clicked.connect(lambda x: os.startfile("saved_urls.txt"))
 
     def getFact(self):
-        self.DisplayFact.setPlainText("Connecting...")
 
         self.Save.setEnabled(True)
         self.Save.setText("Save")
 
-        self.process = Process()
-        self.process.start()
-        self.process.update.connect(self.display)
+        if self.cats != [""]:
+            self.DisplayFact.setPlainText("Connecting...")
+            self.process = Process()
+            self.process.start()
+            self.process.update.connect(self.display)
+        else:
+            self.DisplayFact.setPlainText("Categories not found!")
 
     def display(self, args):
 
@@ -216,19 +218,23 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                     return
 
                 if "Undefined index" not in req:
-                    with open(filename, "a") as f:
-                        f.write(";" + to_add)
+                    with open(filename, "a+") as f:
+                        f.seek(0)
+                        if not f.read():
+                            f.write(to_add)
+                        else:
+                            f.write(";" + to_add)
 
-                    self.DisplayFact.setPlainText("ADDED!")
+                    self.DisplayFact.setPlainText("ADDED")
                     self.CategoryAddField.setPlainText("")
 
                     self.setupCats()
 
                 else:
-                    self.DisplayFact.setPlainText("NO SUCH CATEGORY")
+                    self.DisplayFact.setPlainText("NO CATEGORY FOUND")
 
             else:
-                self.DisplayFact.setPlainText("ALREADY IN")
+                self.DisplayFact.setPlainText("ADDED")
 
     def showCategories(self):
 
@@ -246,6 +252,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             self.state = 0
 
     def deleteCategory(self):
+
+        if self.cats == [""]:
+            return
 
         conf = QtWidgets.QMessageBox.question(self, 'Acceptance', "Are you sure?",
                                                QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
@@ -326,8 +335,7 @@ if __name__ == "__main__":
     res_x = int(params[0].split(" ")[1])
     res_y = int(params[0].split(" ")[2])
     lang = params[1].split(" ")[1].rstrip()
-    def_cat = params[2].split(" ")[1].rstrip()
-    depth = params[3].split(" ")[1].rstrip()
+    depth = params[2].split(" ")[1].rstrip()
     filename = lang + "_categories.txt"
 
     app = QtWidgets.QApplication(sys.argv)

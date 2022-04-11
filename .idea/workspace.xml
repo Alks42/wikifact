@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="406e40ac-3717-4076-b192-33acea867811" name="Default Changelist" comment="Replaced cat with categories. Replace n with f in setupCategories">
+    <list default="true" id="406e40ac-3717-4076-b192-33acea867811" name="Default Changelist" comment="deleted check for WinError. Why i've even added it?">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.txt" beforeDir="false" afterPath="$PROJECT_DIR$/config.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/en_categories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/en_categories.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wiki.py" beforeDir="false" afterPath="$PROJECT_DIR$/wiki.py" afterDir="false" />
     </list>
@@ -116,7 +118,14 @@
       <option name="project" value="LOCAL" />
       <updated>1649705019689</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="deleted check for WinError. Why i've even added it?">
+      <created>1649705444033</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1649705444033</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -136,6 +145,7 @@
     <MESSAGE value="changed coment" />
     <MESSAGE value="Licence and readme" />
     <MESSAGE value="Replaced cat with categories. Replace n with f in setupCategories" />
-    <option name="LAST_COMMIT_MESSAGE" value="Replaced cat with categories. Replace n with f in setupCategories" />
+    <MESSAGE value="deleted check for WinError. Why i've even added it?" />
+    <option name="LAST_COMMIT_MESSAGE" value="deleted check for WinError. Why i've even added it?" />
   </component>
 </project>

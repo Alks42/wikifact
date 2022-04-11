@@ -1,3 +1,3 @@
 resolution 800 450
-language ru
+language en
 depth 3

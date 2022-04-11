@@ -1,5 +1,5 @@
 # What is that?
-Just a small project i've made mostly for myself. As said in the description  it generates random fact from wikipedia using [Mangus Manske's random article tool](https://magnustools.toolforge.org/randomarticle.php) and wikipedia api. For ui PyQt5 package was used.
+Just a small project for generating random fact from specific wikipedia category using [Mangus Manske's random article tool](https://magnustools.toolforge.org/randomarticle.php) and wikipedia api. For ui PyQt5 package was used.
 # How it works
 <img width="440" alt="ui" src="https://user-images.githubusercontent.com/90620708/161583765-0dd71fbd-c373-4e46-8007-7c8adaffc7f5.png">
 

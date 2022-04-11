@@ -41,8 +41,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.More = MyButton()
         self.gridLayoutMain.addWidget(self.More, 3, 1, 1, 2)
 
-        self.CategoryAdd = QtWidgets.QPlainTextEdit(self.gridLayoutWidget)
-        self.gridLayoutMain.addWidget(self.CategoryAdd, 3, 3, 1, 1)
+        self.CategoryAddField = QtWidgets.QPlainTextEdit(self.gridLayoutWidget)
+        self.gridLayoutMain.addWidget(self.CategoryAddField, 3, 3, 1, 1)
 
         self.CategoryAddButton = MyButton()
         self.gridLayoutMain.addWidget(self.CategoryAddButton, 3, 4, 1, 1)
@@ -82,7 +82,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
     def setupCats(self):
 
-        # setup ui of categories field by
+        # setup ui of frame with categories:
         # clearing layout
 
         if self.CatsLayout.count() > 0:
@@ -97,11 +97,11 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 self.cats = f.readline().split(";")
 
         if not os.path.isfile(filename) or self.cats == [""]:
-            with open(filename, "w") as п:
+            with open(filename, "w") as f:
                 f.write(def_cat)
             self.cats = [def_cat]
 
-        # and setting checkboxes-categories
+        # and setting checkboxes for categories
 
         self.checkers = []
         n = 0
@@ -134,11 +134,11 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.Save.setText("Save")
         self.Show.setText("Show")
         self.open_saved_urls.setText("Links")
-        self.CategoryAdd.setFixedSize(250, 40)
+        self.CategoryAddField.setFixedSize(250, 40)
 
         self.DisplayFact.setFont((QtGui.QFont("Times New Roman", 14)))
         self.DisplayFact.setStyleSheet("border: none")
-        self.CategoryAdd.setFont((QtGui.QFont("Times New Roman", 12)))
+        self.CategoryAddField.setFont((QtGui.QFont("Times New Roman", 12)))
 
         self.Delete.setText("Delete selected")
 
@@ -155,7 +155,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.CategoryAddButton.clicked.connect(self.addCategory)
         self.Url.clicked.connect(lambda x: webbrowser.open(self.UrlFull))
         self.Save.clicked.connect(self.save)
-        self.Delete.clicked.connect(self.deleteCat)
+        self.Delete.clicked.connect(self.deleteCategory)
         self.Show.clicked.connect(self.showCategories)
         self.open_saved_urls.clicked.connect(lambda x: os.startfile("saved_urls.txt"))
 
@@ -192,8 +192,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
     def addCategory(self):
 
-        if self.CategoryAdd.toPlainText() != "":
-            to_add = self.CategoryAdd.toPlainText()
+        if self.CategoryAddField.toPlainText() != "":
+            to_add = self.CategoryAddField.toPlainText()
 
             # check if there is any page from the category. If category don't exist it will return Undefined Index
             # sometimes too many requests will lead to WinError or to wikipedia/User_talk:Magnus_Manske page
@@ -215,7 +215,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                         pass
 
                 if "/User_talk:Magnus_Manske" in req:
-                    self.DisplayFact.setPlainText("Too many requests error. Try again.")
+                    self.DisplayFact.setPlainText("Something went wrong. Try again.")
                     return
 
                 if "Undefined index" not in req:
@@ -223,7 +223,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                         f.write(";" + to_add)
 
                     self.DisplayFact.setPlainText("ADDED!")
-                    self.CategoryAdd.setPlainText("")
+                    self.CategoryAddField.setPlainText("")
 
                     self.setupCats()
 
@@ -248,7 +248,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             self.Frame.hide()
             self.state = 0
 
-    def deleteCat(self):
+    def deleteCategory(self):
 
         conf = QtWidgets.QMessageBox.question(self, 'Acceptance', "Are you sure?",
                                                QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
@@ -318,11 +318,11 @@ class Process(QtCore.QThread):
                         break
 
                 else:
-                    self.update.emit(["Too many requests error. Try again."])
+                    self.update.emit(["Something went wrong. Try again."])
                     break
 
             except WindowsError:
-                self.update.emit(["Too many requests error. Try again."])
+                self.update.emit(["Something went wrong. Try again."])
 
 
 if __name__ == "__main__":

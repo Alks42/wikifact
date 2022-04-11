@@ -196,7 +196,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             to_add = self.CategoryAddField.toPlainText()
 
             # check if there is any page from the category. If category don't exist it will return Undefined Index
-            # sometimes too many requests will lead to WinError or to wikipedia/User_talk:Magnus_Manske page
+            # sometimes too many requests will lead to wikipedia/User_talk:Magnus_Manske page
 
             if to_add not in self.cats:
                 url = "http://tools.wmflabs.org/magnustools/randomarticle.php"
@@ -208,11 +208,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 }
 
                 while True:
-                    try:
-                        req = requests.get(url=url, params=params).text
-                        break
-                    except WindowsError:
-                        pass
+                    req = requests.get(url=url, params=params).text
+                    break
 
                 if "/User_talk:Magnus_Manske" in req:
                     self.DisplayFact.setPlainText("Something went wrong. Try again.")
@@ -299,30 +296,26 @@ class Process(QtCore.QThread):
             "d": depth,
         }
 
-        # sometimes too many requests will lead to WinError or to wikipedia/User_talk:Magnus_Manske page
+        # sometimes too many requests will lead to wikipedia/User_talk:Magnus_Manske page
 
         while True:
-            try:
-                req = requests.get(url=url, params=params).text
+            req = requests.get(url=url, params=params).text
 
-                title = re.search("wiki/.*?>", req).group(0)[5:-2]
-                self.update.emit(["Wait..."])
+            title = re.search("wiki/.*?>", req).group(0)[5:-2]
+            self.update.emit(["Wait..."])
 
-                if title != "User_talk:Magnus_Manske":
-                    req = requests.get(
-                        "https://" + lang + ".wikipedia.org/api/rest_v1/page/summary/" + title + "?redirect=true").json()
+            if title != "User_talk:Magnus_Manske":
+                req = requests.get(
+                    "https://" + lang + ".wikipedia.org/api/rest_v1/page/summary/" + title + "?redirect=true").json()
 
-                    if len(req["extract"]) > 200:
-                        self.update.emit([req["extract"], req["content_urls"]["desktop"]["page"],
-                                          req["content_urls"]["desktop"]["page"][:50]])
-                        break
-
-                else:
-                    self.update.emit(["Something went wrong. Try again."])
+                if len(req["extract"]) > 200:
+                    self.update.emit([req["extract"], req["content_urls"]["desktop"]["page"],
+                                      req["content_urls"]["desktop"]["page"][:50]])
                     break
 
-            except WindowsError:
+            else:
                 self.update.emit(["Something went wrong. Try again."])
+                break
 
 
 if __name__ == "__main__":

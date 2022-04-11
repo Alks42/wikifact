@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="406e40ac-3717-4076-b192-33acea867811" name="Default Changelist" comment="Licence and readme">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Default_Changelist]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Default_Changelist_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/wikifact.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/wikifact.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="406e40ac-3717-4076-b192-33acea867811" name="Default Changelist" comment="Replaced cat with categories. Replace n with f in setupCategories">
       <change beforePath="$PROJECT_DIR$/en_categories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/en_categories.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wiki.py" beforeDir="false" afterPath="$PROJECT_DIR$/wiki.py" afterDir="false" />
     </list>
@@ -114,14 +109,33 @@
       <option name="project" value="LOCAL" />
       <updated>1649027714628</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Replaced cat with categories. Replace n with f in setupCategories">
+      <created>1649705019689</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1649705019689</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="project wikifact" />
     <MESSAGE value="delete some unnecessary stuff" />
     <MESSAGE value="changed coment" />
     <MESSAGE value="Licence and readme" />
-    <option name="LAST_COMMIT_MESSAGE" value="Licence and readme" />
+    <MESSAGE value="Replaced cat with categories. Replace n with f in setupCategories" />
+    <option name="LAST_COMMIT_MESSAGE" value="Replaced cat with categories. Replace n with f in setupCategories" />
   </component>
 </project>

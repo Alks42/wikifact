@@ -10,9 +10,19 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 class MyButton(QtWidgets.QPushButton):
 
-    def __init__(self):
+    def __init__(self, left, right):
         super(MyButton, self).__init__()
-        self.setFont((QtGui.QFont("Arial", 14)))
+        self.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        self.setStyleSheet("QPushButton {border : outset #2d63ad; "
+                                         "border-width: 3px " + str(right) + "px 3px " + str(left) + "px;"
+                                         "background-color : white;"
+                                         "padding: 6px 6px 6px 6px;"
+                                         "color: #2d63ad}"
+                           "QPushButton:hover:enabled {background-color : #2d63ad;"
+                                                                "color: white}"
+                            "QPushButton:pressed {font-weight: bold;}")
+
+        self.setFont((QtGui.QFont("Arial", 12)))
 
 
 class Ui_MainWindow(QtWidgets.QMainWindow):
@@ -36,33 +46,32 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.DisplayFact.setReadOnly(True)
         self.gridLayoutMain.addWidget(self.DisplayFact, 1, 1, 1, 7)
 
-        # buttons
-
-        self.More = MyButton()
-        self.gridLayoutMain.addWidget(self.More, 3, 1, 1, 2)
-
         self.CategoryAddField = QtWidgets.QPlainTextEdit(self.gridLayoutWidget)
         self.gridLayoutMain.addWidget(self.CategoryAddField, 3, 3, 1, 1)
 
-        self.CategoryAddButton = MyButton()
-        self.gridLayoutMain.addWidget(self.CategoryAddButton, 3, 4, 1, 1)
-
-        self.Url = MyButton()   # the one with blue link
+        # buttons
+        self.Url = MyButton(0, 0)  # blue link
         self.gridLayoutMain.addWidget(self.Url, 2, 1, 1, 7)
         self.UrlFull = ""
 
-        self.open_saved_urls = MyButton()
-        self.gridLayoutMain.addWidget(self.open_saved_urls, 3, 7, 1, 1)
+        self.More = MyButton(3, 3)
+        self.gridLayoutMain.addWidget(self.More, 3, 1, 1, 2)
 
-        self.Save = MyButton()
+        self.CategoryAddButton = MyButton(3, 3)
+        self.gridLayoutMain.addWidget(self.CategoryAddButton, 3, 4, 1, 1)
+
+        self.Show = MyButton(0, 3)
+        self.gridLayoutMain.addWidget(self.Show, 3, 5, 1, 1)
+
+        self.Save = MyButton(0, 3)
         self.gridLayoutMain.addWidget(self.Save, 3, 6, 1, 1)
 
-        self.Show = MyButton()
-        self.gridLayoutMain.addWidget(self.Show, 3, 5, 1, 1)
+        self.open_saved_urls = MyButton(0, 3)
+        self.gridLayoutMain.addWidget(self.open_saved_urls, 3, 7, 1, 1)
 
         # Field with categories and delete button
 
-        self.Delete = MyButton()
+        self.Delete = MyButton(3, 3)
 
         self.Frame = QtWidgets.QFrame(self.gridLayoutWidget)
         self.CatsLayout = QtWidgets.QGridLayout()
@@ -100,14 +109,14 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             self.CatsLayout.addWidget(self.Delete, 0, 0, 1, 4)
             return
 
-        # and setting checkboxes for categories
+        # and setting checkboxes & delete button for categories
 
         self.checkers = []
         n = 0
         m = 0
         for cat in self.cats:
             check = QtWidgets.QCheckBox()
-            check.setStyleSheet("background-color: white; border: 1px solid; color: Black; padding: 6px 6px 6px 6px;")
+            check.setStyleSheet("background-color: white; border: 0px outset; padding: 6px 0px 6px 6px;")
             check.setFont((QtGui.QFont("Arial", 14)))
             check.setCheckState(2)
             check.setText(cat)
@@ -118,28 +127,34 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 n = 0
                 m += 1
 
-        self.CatsLayout.addWidget(self.Delete, m, n, 1, 4 - n)
+        self.CatsLayout.addWidget(self.Delete, m + 1, 0, 1, 4)
 
     def setupUi(self):
 
-        # setting all text, fonts etc
+        # setting text, fonts etc
 
         self.setWindowTitle("WikiFact")
-        self.setWindowIcon(QtGui.QIcon("wikifact.png"))
+        self.setWindowIcon(QtGui.QIcon("wikifact.ico"))
+        self.setAutoFillBackground(True)
+        self.setStyleSheet("QMainWindow {background-color: white;}"
+                           "QPlainTextEdit {selection-background-color: #3a7bd5}"
+                           "QMenu {background-color: #F2F2F2;} QMenu::item::selected{ color: blue;}"
+                           "QMessageBox {background-color: #F2F2F2;}")
 
-        self.More.setText("More")
-        self.CategoryAddButton.setText("Add field")
-        self.CategoryAddButton.setMinimumWidth(180)
+        self.More.setText("   More   ")
+        self.CategoryAddButton.setText("   Add field   ")
         self.Save.setText("Save")
         self.Show.setText("Show")
         self.open_saved_urls.setText("Links")
-        self.CategoryAddField.setFixedSize(250, 40)
+        self.CategoryAddField.setStyleSheet("border: outset #3a7bd5; border-width: 3px 0px 3px 0px")
+        self.CategoryAddField.setFixedHeight(50)
 
         self.DisplayFact.setFont((QtGui.QFont("Times New Roman", 14)))
         self.DisplayFact.setStyleSheet("border: none")
-        self.CategoryAddField.setFont((QtGui.QFont("Times New Roman", 12)))
+        self.CategoryAddField.setFont((QtGui.QFont("Times New Roman", 14)))
 
         self.Delete.setText("Delete selected")
+        self.Delete.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
 
         self.Url.setFont((QtGui.QFont("Times New Roman", 10)))
         self.Url.setMinimumHeight(40)
@@ -182,7 +197,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
     def save(self):
 
-        # save current fact in file with link
+        # save current fact in file with link button
 
         if self.UrlFull != "":
             with open("saved_urls.txt", "ab") as f:
@@ -208,10 +223,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                     "project": "wikipedia",
                     "categories": to_add,
                 }
-
-                while True:
-                    req = requests.get(url=url, params=params).text
-                    break
+                self.DisplayFact.setPlainText("Wait...")
+                req = requests.get(url=url, params=params).text
 
                 if "/User_talk:Magnus_Manske" in req:
                     self.DisplayFact.setPlainText("Something went wrong. Try again.")
@@ -238,12 +251,15 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
     def showCategories(self):
 
+        # This is probably awful way to keep window size
         if self.state == 0:
             self.Frame.show()
             self.state = 1
 
             if self.isMaximized() == 0:
                 self.resize(self.width(), self.height() + self.Frame.height())
+                self.More.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
+                self.More.setFocus()
 
         else:
             if self.isMaximized() == 0:
@@ -257,7 +273,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             return
 
         conf = QtWidgets.QMessageBox.question(self, 'Acceptance', "Are you sure?",
-                                               QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+                                              QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
         if conf == QtWidgets.QMessageBox.No:
             return
 
@@ -305,15 +321,13 @@ class Process(QtCore.QThread):
             "d": depth,
         }
 
-        # sometimes too many requests will lead to wikipedia/User_talk:Magnus_Manske page
-
-        while True:
+        while True:  # to avoid short summaries (less than 200 chars) like Heart is an animal organ for pumping blood
             req = requests.get(url=url, params=params).text
 
             title = re.search("wiki/.*?>", req).group(0)[5:-2]
             self.update.emit(["Wait..."])
 
-            if title != "User_talk:Magnus_Manske":
+            if title != "User_talk:Magnus_Manske":  # smt many requests will lead to wikipedia/User_talk:Magnus_Manske
                 req = requests.get(
                     "https://" + lang + ".wikipedia.org/api/rest_v1/page/summary/" + title + "?redirect=true").json()
 
@@ -328,7 +342,6 @@ class Process(QtCore.QThread):
 
 
 if __name__ == "__main__":
-
     with open("config.txt") as f:
         params = f.readlines()
 

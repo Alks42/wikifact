@@ -79,14 +79,14 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.CatsLayout.setContentsMargins(0, 0, 0, 0)
         self.Frame.setLayout(self.CatsLayout)
         self.gridLayoutMain.addWidget(self.Frame, 4, 1, 1, 7)
-        self.Frame.hide()
 
-        self.state = 0
+        self.state = 1
 
         self.setCentralWidget(self.gridLayoutWidget)
 
-        self.setupCats()
         self.setupUi()
+        self.setupCats()
+        QtCore.QTimer.singleShot(0, self.showCategories)  # need time to define frame height
         self.logic()
 
     def setupCats(self):
@@ -253,13 +253,10 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
         # This is probably awful way to keep window size
         if self.state == 0:
-            self.Frame.show()
-            self.state = 1
-
             if self.isMaximized() == 0:
                 self.resize(self.width(), self.height() + self.Frame.height())
-                self.More.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
-                self.More.setFocus()
+            self.Frame.show()
+            self.state = 1
 
         else:
             if self.isMaximized() == 0:

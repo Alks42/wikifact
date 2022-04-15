@@ -9,8 +9,8 @@ The blue link is clickable and will open the wikipedia page in your browser. The
 ## Config file
 Contain 3 changeable  parameters:
 - resolution - width and height of program window
-- language - could be any en, ru, de etc
-- Depth - Integer numbers from 0 to 10. The bigger the number the wider range of subcategories. E.g. in the religion category, 1 would result in facts about saints, various churches, etc. while 5 could lead to historians researching Catholic protests in modern America.
+- language - could be any en, ru, de etc. Note that new language will create require *new-lang_category.txt* file
+- Depth - Integer numbers from 0 to 10. The bigger the number the wider range of subcategories. E.g. in the religion category, 1 would result in facts about saints, various churches, etc. while 5 could lead to historians researching Catholic protests in modern America
 - avoid-descriptions - list of page descriptions to avoid.
 ### Is there any .exe file?
 Yep, just look to the right to releases section.

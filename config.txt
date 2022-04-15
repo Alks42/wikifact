@@ -1,3 +1,4 @@
 resolution 800 450
 language en
 depth 3
+avoid-descriptions ,Surname list,Calendar year

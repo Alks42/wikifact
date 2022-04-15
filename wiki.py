@@ -18,9 +18,9 @@ class MyButton(QtWidgets.QPushButton):
                                          "background-color : white;"
                                          "padding: 6px 6px 6px 6px;"
                                          "color: #2d63ad}"
-                           "QPushButton:hover:enabled {background-color : #2d63ad;"
-                                                                "color: white}"
-                            "QPushButton:pressed {font-weight: bold;}")
+                           "QPushButton:hover:enabled {background-color : #2d63ad; color: white}"
+                           "QPushButton:pressed {font-weight: bold;}"
+                           "QPushButton:disabled {background-color : white; color: #2d63ad}")
 
         self.setFont((QtGui.QFont("Arial", 12)))
 
@@ -116,7 +116,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         m = 0
         for cat in self.cats:
             check = QtWidgets.QCheckBox()
-            check.setStyleSheet("background-color: white; border: 0px outset; padding: 6px 0px 6px 6px;")
+            check.setStyleSheet("QCheckBox {background-color: white; border: 0px outset; padding: 6px 0px 6px 6px;}"
+                                "QCheckBox::indicator {border-radius: 6px; border: 3px outset #2d63ad;}"
+                                "QCheckBox::indicator:checked {border-radius: 6px; background-color :  #2d63ad;}")
             check.setFont((QtGui.QFont("Arial", 14)))
             check.setCheckState(2)
             check.setText(cat)
@@ -199,9 +201,10 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
         # save current fact in file with link button
 
-        if self.UrlFull != "":
+        fact = self.DisplayFact.toPlainText()[:142]
+        if self.UrlFull != "" and fact not in ["Wait...", "Connecting..."]:
             with open("saved_urls.txt", "ab") as f:
-                f.write(str(self.DisplayFact.toPlainText()[:142] + "... - " + "\n" + self.UrlFull
+                f.write(str(fact + "... - " + "\n" + self.UrlFull
                             + "\n***\n").encode("utf-8"))
 
             self.Save.setEnabled(False)
@@ -244,7 +247,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                     self.setupCats()
 
                 else:
-                    self.DisplayFact.setPlainText("NO CATEGORY FOUND")
+                    self.DisplayFact.setPlainText("NO CATEGORY FOUND."
+                                                  "\nRemember that wikipedia categories are case sensitive")
 
             else:
                 self.DisplayFact.setPlainText("ADDED")
@@ -318,17 +322,19 @@ class Process(QtCore.QThread):
             "d": depth,
         }
 
-        while True:  # to avoid short summaries (less than 200 chars) like Heart is an animal organ for pumping blood
-            req = requests.get(url=url, params=params).text
-
-            title = re.search("wiki/.*?>", req).group(0)[5:-2]
+        while True:  # to avoid short summaries (less than 200 chars) like "Heart is an animal organ for pumping blood."
             self.update.emit(["Wait..."])
+            req = requests.get(url=url, params=params).text
+            title = re.search("wiki/.*?>", req).group(0)[5:-2]
 
             if title != "User_talk:Magnus_Manske":  # smt many requests will lead to wikipedia/User_talk:Magnus_Manske
                 req = requests.get(
                     "https://" + lang + ".wikipedia.org/api/rest_v1/page/summary/" + title + "?redirect=true").json()
 
-                if len(req["extract"]) > 200:
+                # Partly helps to avoid short and disambiguation articles
+                if len(req["extract"]) > 200 and req["type"] != 'disambiguation':
+                    if "description" in req.keys() and req["description"] in avoid_d:
+                        continue
                     self.update.emit([req["extract"], req["content_urls"]["desktop"]["page"],
                                       req["content_urls"]["desktop"]["page"][:50]])
                     break
@@ -346,6 +352,7 @@ if __name__ == "__main__":
     res_y = int(params[0].split(" ")[2])
     lang = params[1].split(" ")[1].rstrip()
     depth = params[2].split(" ")[1].rstrip()
+    avoid_d = params[3].rstrip().split(",")[1:]
     filename = lang + "_categories.txt"
 
     app = QtWidgets.QApplication(sys.argv)

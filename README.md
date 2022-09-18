@@ -12,5 +12,3 @@ Contain 3 changeable  parameters:
 - language - could be any en, ru, de etc.
 - Depth - Integer number from 0 to 10. The bigger the number the wider range of subcategories. 
 - avoid-descriptions - avoid pages with these descriptions.
-### Is there any .exe file?
-Yep, just look to the right to releases section.
